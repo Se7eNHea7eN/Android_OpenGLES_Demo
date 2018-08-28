@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_gles10"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_gles10" />
+    <item
+        android:id="@+id/navigation_customizeshader"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_customizeshader" />
+
+    <item
+        android:id="@+id/navigation_texture"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_texture" />
+
+    <item
+        android:id="@+id/navigation_3d"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_3d" />
+
+</menu>
