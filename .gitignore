@@ -62,4 +62,8 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
+<<<<<<< HEAD
 fastlane/readme.md
+=======
+fastlane/readme.md
+>>>>>>> init
