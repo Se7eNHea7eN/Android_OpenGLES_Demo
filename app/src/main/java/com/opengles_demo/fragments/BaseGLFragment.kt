@@ -9,7 +9,6 @@ import android.view.ViewGroup
 
 abstract class BaseGLFragment : Fragment(), GLSurfaceView.Renderer {
     var glSurfaceView: GLSurfaceView? = null
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         glSurfaceView = createGLSurfaveView()
         return glSurfaceView
