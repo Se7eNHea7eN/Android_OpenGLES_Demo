@@ -19,4 +19,8 @@
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/title_3d" />
 
+    <item
+        android:id="@+id/navigation_texture_mapping"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/texture_mapping" />
 </menu>

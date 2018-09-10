@@ -1,17 +1,23 @@
-package asiainnovations.com.opengles_demo.fragments
+package com.opengles_demo.fragments
 
+import android.graphics.BitmapFactory
 import android.opengl.GLES20.*
 import android.opengl.Matrix
 import asiainnovations.com.opengles_demo.GlShader
+import asiainnovations.com.opengles_demo.fragments.BaseGLFragment
 import asiainnovations.com.opengles_demo.getAssetAsString
+import com.asiainnovations.onlyu.video.gl.GlUtil
+import com.opengles_demo.R
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import java.nio.FloatBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
-class CubeFragment : BaseGLFragment() {
+class TextureMappingFragment : BaseGLFragment() {
     private lateinit var shader: GlShader
     private var lastDrawTime: Long = 0
+    var textureId: Int = 0
 
     //透视矩阵
     private val mProjMatrix = FloatArray(16)
@@ -20,44 +26,51 @@ class CubeFragment : BaseGLFragment() {
     //透视矩阵与视图矩阵变换后的总矩阵
     private val mMVPMatrix = FloatArray(16)
 
-    private val colors = floatArrayOf(// Colors of the 6 faces
-            1.0f, 0.5f, 0.0f, 1.0f, // 0. orange
-            1.0f, 0.5f, 0.0f, 1.0f, // 0. orange
-            1.0f, 0.5f, 0.0f, 1.0f, // 0. orange
-            1.0f, 0.5f, 0.0f, 1.0f, // 0. orange
-            1.0f, 0.5f, 0.0f, 1.0f, // 0. orange
-            1.0f, 0.5f, 0.0f, 1.0f, // 0. orange
-            1.0f, 0.0f, 1.0f, 1.0f, // 1. violet
-            1.0f, 0.0f, 1.0f, 1.0f, // 1. violet
-            1.0f, 0.0f, 1.0f, 1.0f, // 1. violet
-            1.0f, 0.0f, 1.0f, 1.0f, // 1. violet
-            1.0f, 0.0f, 1.0f, 1.0f, // 1. violet
-            1.0f, 0.0f, 1.0f, 1.0f, // 1. violet
-            0.0f, 1.0f, 0.0f, 1.0f, // 2. green
-            0.0f, 1.0f, 0.0f, 1.0f, // 2. green
-            0.0f, 1.0f, 0.0f, 1.0f, // 2. green
-            0.0f, 1.0f, 0.0f, 1.0f, // 2. green
-            0.0f, 1.0f, 0.0f, 1.0f, // 2. green
-            0.0f, 1.0f, 0.0f, 1.0f, // 2. green
-            0.0f, 0.0f, 1.0f, 1.0f, // 3. blue
-            0.0f, 0.0f, 1.0f, 1.0f, // 3. blue
-            0.0f, 0.0f, 1.0f, 1.0f, // 3. blue
-            0.0f, 0.0f, 1.0f, 1.0f, // 3. blue
-            0.0f, 0.0f, 1.0f, 1.0f, // 3. blue
-            0.0f, 0.0f, 1.0f, 1.0f, // 3. blue
-            1.0f, 0.0f, 0.0f, 1.0f, // 4. red
-            1.0f, 0.0f, 0.0f, 1.0f, // 4. red
-            1.0f, 0.0f, 0.0f, 1.0f, // 4. red
-            1.0f, 0.0f, 0.0f, 1.0f, // 4. red
-            1.0f, 0.0f, 0.0f, 1.0f, // 4. red
-            1.0f, 0.0f, 0.0f, 1.0f, // 4. red
-            1.0f, 1.0f, 0.0f, 1.0f,  // 5. yellow
-            1.0f, 1.0f, 0.0f, 1.0f,  // 5. yellow
-            1.0f, 1.0f, 0.0f, 1.0f,  // 5. yellow
-            1.0f, 1.0f, 0.0f, 1.0f,  // 5. yellow
-            1.0f, 1.0f, 0.0f, 1.0f,  // 5. yellow
-            1.0f, 1.0f, 0.0f, 1.0f  // 5. yellow
+    private val textureCoordinates = floatArrayOf(
+            0.0f, 0.0f,//左下
+            1.0f, 0.0f,//右下
+            0.0f, 1.0f,//左上
+            0.0f, 1.0f,//左上
+            1.0f, 0.0f,//右下
+            1.0f, 1.0f,//右上
+
+            1.0f, 0.0f,//右下
+            1.0f, 1.0f,//右上
+            0.0f, 0.0f,//左下
+            0.0f, 0.0f,//左下
+            0.0f, 1.0f,//左上
+            1.0f, 1.0f,//右上
+
+            1.0f, 0.0f,//右下
+            0.0f, 0.0f,//左下
+            0.0f, 1.0f,//左上
+            0.0f, 1.0f,//左上
+            1.0f, 1.0f,//右上
+            1.0f, 0.0f,//右下
+
+            1.0f, 0.0f,//右下
+            0.0f, 0.0f,//左下
+            0.0f, 1.0f,//左上
+            0.0f, 1.0f,//左上
+            1.0f, 1.0f,//右上
+            1.0f, 0.0f,//右下
+
+            0.0f, 1.0f,//左上
+            1.0f, 1.0f,//右上
+            1.0f, 0.0f,//右下
+            1.0f, 0.0f,//右下
+            0.0f, 0.0f,//左下
+            0.0f, 1.0f,//左上
+
+            0.0f, 1.0f,//左上
+            1.0f, 1.0f,//右上
+            1.0f, 0.0f,//右下
+            1.0f, 0.0f,//右下
+            0.0f, 0.0f,//左下
+            0.0f, 1.0f//左上
     )
+
+
 
     private val vertices = floatArrayOf(// Vertices of the 6 faces
             // FRONT
@@ -103,7 +116,11 @@ class CubeFragment : BaseGLFragment() {
             -1.0f, -1.0f, 1.0f,  // 0. left-bottom-front
             -1.0f, -1.0f, -1.0f  // 4. left-bottom-back
     )
-
+    private val textureMappingBuffer: FloatBuffer = ByteBuffer.allocateDirect(textureCoordinates.size* 4)
+            .order(ByteOrder.nativeOrder())
+            .asFloatBuffer().apply {
+                put(textureCoordinates)
+            }
     override fun onDrawFrame(gl: GL10) {
         glClearColor(0f, 0f, 0f, 0f)
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
@@ -121,15 +138,17 @@ class CubeFragment : BaseGLFragment() {
                     put(vertices)
                     position(0)
                 })
-        shader.setVertexAttribArray("aColor", 4, ByteBuffer.allocateDirect(colors.size * 4)
-                .order(ByteOrder.nativeOrder()).asFloatBuffer().apply {
-                    put(colors)
-                    position(0)
-                })
+
+        textureMappingBuffer.position(0)
+        shader.setVertexAttribArray("aTextureCoordinate", 2, textureMappingBuffer)
+
+        glActiveTexture(GL_TEXTURE0)
+        glBindTexture(GL_TEXTURE_2D, textureId)
+
+        glUniform1i(shader.getUniformLocation("uTexture"), 0)
 
         glDrawArrays(GL_TRIANGLES, 0, vertices.size / 3)
 
-        glDrawArrays(GL_LINES, 0, vertices.size / 3)
 
         glDisableVertexAttribArray(shader.getAttribLocation("aPosition"))
         glActiveTexture(GL_TEXTURE0)
@@ -155,9 +174,11 @@ class CubeFragment : BaseGLFragment() {
 
     override fun onSurfaceCreated(p0: GL10?, p1: EGLConfig?) {
         lastDrawTime = System.currentTimeMillis()
+        textureId = GlUtil.createTextureFromBitmap(BitmapFactory.decodeResource(resources, R.mipmap.bitmap01))
+
         shader = GlShader(
-                getAssetAsString(resources, "simple/vertex_shader.glsl")!!,
-                getAssetAsString(resources, "simple/fragment_shader.glsl")!!
+                getAssetAsString(resources, "texture/vertex_shader.glsl")!!,
+                getAssetAsString(resources, "texture/fragment_shader.glsl")!!
         )
 
     }

@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">OpenGLES_Demo</string>
-    <string name="title_gles10">GLES10</string>
-    <string name="title_customizeshader">自定义着色器</string>
-    <string name="title_texture">纹理绘制</string>
+    <string name="title_gles10">GLES1.0</string>
+    <string name="title_customizeshader">着色器</string>
+    <string name="title_texture">纹理</string>
     <string name="title_3d">3d绘制</string>
+    <string name="texture_mapping">纹理映射</string>
 </resources>
