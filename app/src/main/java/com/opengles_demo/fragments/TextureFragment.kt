@@ -2,7 +2,8 @@ package asiainnovations.com.opengles_demo.fragments
 
 import android.graphics.BitmapFactory
 import android.opengl.GLES20.*
-import asiainnovations.com.opengles_demo.GlShaderTexture2DRect
+import asiainnovations.com.opengles_demo.GlShader
+import asiainnovations.com.opengles_demo.getAssetAsString
 import com.asiainnovations.onlyu.video.gl.GlUtil
 import com.asiainnovations.onlyu.video.gl.TextureRotationUtil
 import com.opengles_demo.R
@@ -13,18 +14,19 @@ import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
 class TextureFragment : BaseGLFragment() {
-    lateinit var glShaderTexture2DRect:GlShaderTexture2DRect
-    var textureId:Int = 0
-    var width : Int =0
-    var height  : Int =0
-    private val mGLCubeBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.CUBE.size * 4)
+    var textureId: Int = 0
+    var width: Int = 0
+    var height: Int = 0
+    private lateinit var shader: GlShader
+
+    private val vertexBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.CUBE.size * 4)
             .order(ByteOrder.nativeOrder())
             .asFloatBuffer()
             .apply {
                 put(TextureRotationUtil.CUBE).position(0);
             }
 
-    private val mGLTextureBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.TEXTURE_NO_ROTATION.size * 4)
+    private val textureMappingBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.TEXTURE_NO_ROTATION.size * 4)
             .order(ByteOrder.nativeOrder())
             .asFloatBuffer().apply {
                 put(TextureRotationUtil.getRotation(0, false, false)).position(0)
@@ -34,21 +36,27 @@ class TextureFragment : BaseGLFragment() {
         glClearColor(0f, 0f, 0f, 0f)
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
-        glShaderTexture2DRect.useProgram()
-        GlUtil.checkNoGLES2Error("glUseProgram")
+        shader.useProgram()
 
-        glShaderTexture2DRect.setVertexPosition(mGLCubeBuffer)
-        glShaderTexture2DRect.setTextureCoordinate(mGLTextureBuffer)
-        glShaderTexture2DRect.setImageTexture(textureId)
+        vertexBuffer.position(0)
+        shader.setVertexAttribArray("position", 2, vertexBuffer)
+        textureMappingBuffer.position(0)
+        shader.setVertexAttribArray("inputTextureCoordinate", 2, textureMappingBuffer)
+
+        glActiveTexture(GL_TEXTURE0)
+        glBindTexture(GL_TEXTURE_2D, textureId)
+
+        glUniform1i(shader.getUniformLocation("inputImageTexture"), 0)
 
         glViewport(0, 0, width, height)
 
-        glShaderTexture2DRect.draw()
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4)
 
+        glDisableVertexAttribArray(shader.getAttribLocation("position"))
+        glDisableVertexAttribArray(shader.getAttribLocation("inputTextureCoordinate"))
+        glActiveTexture(GL_TEXTURE0)
         glBindTexture(GL_TEXTURE_2D, 0)
-
-        glShaderTexture2DRect.disable()
-
+        glUseProgram(0)
     }
 
     override fun onSurfaceChanged(p0: GL10?, p1: Int, p2: Int) {
@@ -58,8 +66,12 @@ class TextureFragment : BaseGLFragment() {
 
     override fun onSurfaceCreated(p0: GL10?, p1: EGLConfig?) {
         textureId = GlUtil.createTextureFromBitmap(BitmapFactory.decodeResource(resources, R.mipmap.bitmap01))
-        glShaderTexture2DRect = GlShaderTexture2DRect()
 
-        mGLCubeBuffer.put(TextureRotationUtil.CUBE).position(0)
+        vertexBuffer.put(TextureRotationUtil.CUBE).position(0)
+
+        shader = GlShader(
+                getAssetAsString(resources, "rect/vertex_shader.glsl")!!,
+                getAssetAsString(resources, "rect/fragment_shader.glsl")!!
+        )
     }
 }

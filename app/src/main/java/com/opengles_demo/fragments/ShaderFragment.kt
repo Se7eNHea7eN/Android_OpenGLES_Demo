@@ -10,7 +10,7 @@ import java.nio.ByteOrder
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
-class CustomizeShaderFragment : BaseGLFragment() {
+class ShaderFragment : BaseGLFragment() {
 
     private val TRIANGLE_COORDS = floatArrayOf(
             0.0f, 0.577350269f,  // 0 top
@@ -85,8 +85,8 @@ class CustomizeShaderFragment : BaseGLFragment() {
         lastDrawTime = System.currentTimeMillis()
 
         shader = GlShader(
-                getAssetAsString(resources, "vertex_shader.glsl")!!,
-                getAssetAsString(resources, "fragment_shader.glsl")!!
+                getAssetAsString(resources, "simple/vertex_shader.glsl")!!,
+                getAssetAsString(resources, "simple/fragment_shader.glsl")!!
         )
     }
 
