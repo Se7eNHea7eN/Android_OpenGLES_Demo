@@ -2,10 +2,15 @@ package asiainnovations.com.opengles_demo.fragments
 
 import android.graphics.BitmapFactory
 import android.opengl.GLES20.*
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import asiainnovations.com.opengles_demo.getAssetAsString
 import com.asiainnovations.onlyu.video.gl.GlUtil
 import com.asiainnovations.onlyu.video.gl.TextureRotationUtil
 import com.opengles_demo.R
+import com.opengles_demo.databinding.TextureFragmentBinding
 import com.opengles_demo.fragments.MVPFragment
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -15,6 +20,14 @@ import javax.microedition.khronos.opengles.GL10
 
 class TextureFragment : MVPFragment() {
     var textureId: Int = 0
+    var saturation :Int = 50
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return super.onCreateView(inflater, container, savedInstanceState).apply {
+            val binding = TextureFragmentBinding.inflate(inflater)
+            binding.fragment = this@TextureFragment
+            (this as ViewGroup).addView(binding.root)
+        }
+    }
 
     private val vertexBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.CUBE.size * 4)
             .order(ByteOrder.nativeOrder())
@@ -34,6 +47,7 @@ class TextureFragment : MVPFragment() {
     override fun onDrawFrame() {
         shader.setVertexAttribArray("position", 2, vertexBuffer)
         shader.setVertexAttribArray("inputTextureCoordinate", 2, textureMappingBuffer)
+        shader.setUniformFloat("saturation",saturation/100F)
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4)
     }
 

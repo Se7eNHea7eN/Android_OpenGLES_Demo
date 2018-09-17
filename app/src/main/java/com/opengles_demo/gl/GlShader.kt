@@ -73,6 +73,17 @@ class GlShader(vertexSource: String, fragmentSource: String) {
         GlUtil.checkNoGLES2Error("glUniformMatrix4fv")
         return location
     }
+
+    fun setUniformFloat(label: String,value: Float) : Int{
+        if (program == -1) {
+            throw RuntimeException("The program has been released")
+        }
+
+        val location = getUniformLocation(label)
+        glUniform1f(location,value)
+        GlUtil.checkNoGLES2Error("glUniformMatrix4fv")
+        return location
+    }
     fun getUniformLocation(label: String): Int {
         if (program == -1) {
             throw RuntimeException("The program has been released")

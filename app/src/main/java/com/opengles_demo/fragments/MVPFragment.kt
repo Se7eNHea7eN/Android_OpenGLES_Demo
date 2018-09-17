@@ -38,6 +38,7 @@ abstract class MVPFragment: BaseGLFragment() {
 
     override fun onSurfaceChanged(gl: GL10, width: Int, height: Int) {
         glClearDepthf(1.0f)
+        glEnable(GL_CULL_FACE)
         glEnable(GL_DEPTH_TEST)
         glDepthFunc(GL_LEQUAL)
         glViewport(0, 0, width, height)
