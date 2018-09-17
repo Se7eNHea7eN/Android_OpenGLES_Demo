@@ -13,6 +13,7 @@ import asiainnovations.com.opengles_demo.fragments.TextureFragment
 import com.google.android.material.navigation.NavigationView
 import com.opengles_demo.R.id
 import com.opengles_demo.R.layout
+import com.opengles_demo.fragments.LightingFragment
 import com.opengles_demo.fragments.TextureMappingFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -23,8 +24,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(layout.activity_main)
         setSupportActionBar(toolbar)
 
-        val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         drawer_layout.openDrawer(GravityCompat.START)
@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             id.navigation_texture -> replaceFragment(TextureFragment())
             id.navigation_3d -> replaceFragment(CubeFragment())
             id.navigation_texture_mapping -> replaceFragment(TextureMappingFragment())
+            id.navigation_lighting -> replaceFragment(LightingFragment())
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)

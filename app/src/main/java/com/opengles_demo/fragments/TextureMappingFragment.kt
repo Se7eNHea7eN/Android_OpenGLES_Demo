@@ -33,23 +33,22 @@ class TextureMappingFragment : MVPFragment() {
                     }
 
     override fun onEarlyDrawFrame() {
-        Matrix.rotateM(mVMatrix, 0, 30 * deltaTime.toFloat() / 1000, 0.5f, 0.5f, 0.5f)
+        Matrix.rotateM(modelMatrix, 0, 30 * deltaTime.toFloat() / 1000, 0.5f, 0.5f, 0.5f)
     }
 
     override fun onDrawFrame() {
-        shader.setUniformMatrix("uMVPMatrix", mMVPMatrix)
+        shader.useProgram()
+        shader.setUniformMatrix("uMVPMatrix", mvpMatrix)
         shader.setVertexAttribArray("aPosition", 3, vertexBuffer)
         shader.setVertexAttribArray("aTextureCoordinate", 2, textureMappingBuffer)
 
         glDrawArrays(GL_TRIANGLES, 0, Cube.vertices.size / 3)
-
     }
 
 
     override fun onSurfaceCreated(gl: GL10, config: EGLConfig) {
         super.onSurfaceCreated(gl, config)
         textureId = GlUtil.createTextureFromBitmap(BitmapFactory.decodeResource(resources, R.mipmap.crate))
-
         glActiveTexture(GL_TEXTURE0)
         glBindTexture(GL_TEXTURE_2D, textureId)
         glUniform1i(shader.getUniformLocation("uTexture"), 0)

@@ -1,19 +1,21 @@
 uniform mat4 uMVPMatrix;
-attribute vec4 aVertex;
-attribute vec4 aNormal;
-attribute vec4 aTextureCoordinate;
+uniform mat4 uMVMatrix;
 
-varying vec2 vTextureCoordinate;
+attribute vec4 aPosition;
+attribute vec3 aNormal;
+attribute vec2 aTextureCoordinate;
+
+varying vec3 vPosition;
 varying vec3 vNormal;
-varying vec3 vVertex;
+varying vec2 vTextureCoordinate;
 
-void
-main()
+void main()
 {
-    vVertex = vec3(uMVPMatrix * aVertex);
-    vNormal = normalize(uMVPMatrix * aNormal);
+	vPosition = vec3(uMVMatrix * aPosition);
 
-    vTextureCoordinate = aTextureCoordinate.xy;
+	vTextureCoordinate = aTextureCoordinate;
 
-    gl_Position = uMVPMatrix * aVertex;
+    vNormal = vec3(uMVMatrix * vec4(aNormal, 0.0));
+
+	gl_Position = uMVPMatrix * aPosition;
 }

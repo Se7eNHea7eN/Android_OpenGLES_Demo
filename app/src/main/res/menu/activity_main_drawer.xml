@@ -28,10 +28,10 @@
             android:icon="@drawable/ic_menu_send"
             android:title="@string/texture_mapping" />
 
-        <!--<item-->
-            <!--android:id="@+id/navigation_lighting"-->
-            <!--android:icon="@drawable/ic_menu_send"-->
-            <!--android:title="@string/lighting" />-->
+        <item
+            android:id="@+id/navigation_lighting"
+            android:icon="@drawable/ic_menu_send"
+            android:title="@string/lighting" />
     </group>
 
 

@@ -10,11 +10,11 @@ import java.nio.ByteOrder
 
 class CubeFragment : MVPFragment() {
     override fun onEarlyDrawFrame() {
-        Matrix.rotateM(mVMatrix, 0, 30 * deltaTime.toFloat() / 1000, 0.5f, 0.5f, 0.5f)
+        Matrix.rotateM(modelMatrix, 0, 30 * deltaTime.toFloat() / 1000, 0.5f, 0.5f, 0.5f)
     }
 
     override fun onDrawFrame() {
-        shader.setUniformMatrix("uMVPMatrix", mMVPMatrix)
+        shader.setUniformMatrix("uMVPMatrix", mvpMatrix)
 
         shader.setVertexAttribArray("aPosition", 3, ByteBuffer.allocateDirect(Cube.vertices.size * 4)
                 .order(ByteOrder.nativeOrder()).asFloatBuffer().apply {

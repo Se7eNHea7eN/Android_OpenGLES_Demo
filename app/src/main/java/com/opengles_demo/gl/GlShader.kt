@@ -6,11 +6,11 @@ import com.asiainnovations.onlyu.video.gl.GlUtil
 import java.nio.FloatBuffer
 
 // Helper class for handling OpenGL shaders and shader programs.
-class GlShader(vertexSource: String, fragmentSource: String) {
+class GlShader {
 
     private var program: Int = 0
 
-    init {
+    constructor(vertexSource: String, fragmentSource: String) {
         val vertexShader = compileShader(GL_VERTEX_SHADER, vertexSource)
         val fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentSource)
         program = glCreateProgram()
@@ -35,6 +35,23 @@ class GlShader(vertexSource: String, fragmentSource: String) {
         // shaders are fine however - it will delete them when they are no longer attached to a program.
         glDeleteShader(vertexShader)
         glDeleteShader(fragmentShader)
+        GlUtil.checkNoGLES2Error("Creating GlShader")
+    }
+
+    constructor(vertexShader:Int,fragmentShader:Int){
+        program = glCreateProgram()
+        if (program == 0) {
+            throw RuntimeException("glCreateProgram() failed. GLES20 error: " + glGetError())
+        }
+        glAttachShader(program, vertexShader)
+        glAttachShader(program, fragmentShader)
+        glLinkProgram(program)
+        val linkStatus = intArrayOf(GL_FALSE)
+        glGetProgramiv(program, GL_LINK_STATUS, linkStatus, 0)
+        if (linkStatus[0] != GL_TRUE) {
+            Log.e(TAG, "Could not link program: " + glGetProgramInfoLog(program))
+            throw RuntimeException(glGetProgramInfoLog(program))
+        }
         GlUtil.checkNoGLES2Error("Creating GlShader")
     }
 
