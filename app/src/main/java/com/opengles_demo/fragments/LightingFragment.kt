@@ -64,7 +64,7 @@ class LightingFragment : MVPFragment() {
         Matrix.translateM(lightModelMatrix, 0, 0.0f, 0.0f, -1.0f)
         angleInDegrees -= 0.1f* deltaTime
         Matrix.rotateM(lightModelMatrix, 0, angleInDegrees, 0.0f, 1.0f, 0.0f)
-        Matrix.translateM(lightModelMatrix, 0, 0.0f, 0.0f, 2f)
+        Matrix.translateM(lightModelMatrix, 0, 0.0f, -0.5f, 2f)
 
         Matrix.multiplyMV(mLightPosInWorldSpace, 0, lightModelMatrix, 0, mLightPosInModelSpace, 0)
         Matrix.multiplyMV(mLightPosInEyeSpace, 0, viewMatrix, 0, mLightPosInWorldSpace, 0)
