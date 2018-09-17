@@ -2,16 +2,19 @@ package asiainnovations.com.opengles_demo.fragments
 
 import android.opengl.GLSurfaceView
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import androidx.fragment.app.Fragment
 
 abstract class BaseGLFragment : Fragment(), GLSurfaceView.Renderer {
     var glSurfaceView: GLSurfaceView? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val frameLayout = FrameLayout(context!!)
         glSurfaceView = createGLSurfaveView()
-        return glSurfaceView
+        frameLayout.addView(glSurfaceView)
+        return frameLayout
     }
 
     protected open fun createGLSurfaveView(): GLSurfaceView =
