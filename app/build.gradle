@@ -23,6 +23,16 @@ android {
     dataBinding {
         enabled = true
     }
+
+    signingConfigs {
+        debug {
+            storeFile file("debug.keystore")
+        }
+        release {
+            storeFile file("debug.keystore")
+        }
+    }
+
 }
 
 dependencies {
