@@ -27,17 +27,14 @@ abstract class MVPFragment: BaseGLFragment() {
     protected var deltaTime = 0L
 
 
-    // Position the eye in front of the origin.
     protected var eyeX = 0.0f
     protected var eyeY = 0.0f
     protected var eyeZ = -5f
 
-     // We are looking toward the distance
     protected var lookX = 0.0f
     protected var lookY = 0.0f
     protected var lookZ = 1.0f
 
-    // Set our up vector. This is where our head would be pointing were we holding the camera.
     protected var upX = 0.0f
     protected var upY = 1.0f
     protected var upZ = 0.0f
