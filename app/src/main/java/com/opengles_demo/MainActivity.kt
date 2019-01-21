@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
@@ -27,8 +28,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.openDrawer(GravityCompat.START)
 
         nav_view.setNavigationItemSelectedListener(this)
-
-        replaceFragment(TextureMappingFragment())
     }
 
     override fun onBackPressed() {
@@ -53,8 +52,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             id.navigation_3d -> CubeFragment()
             id.navigation_texture_mapping -> TextureMappingFragment()
             id.navigation_lighting -> LightingFragment()
-//            id.shader_arts -> ShaderToyFragment.newInstance("hexagone")
-            id.shader_arts -> ShaderToyFragment.newInstance("test")
+            id.shader_arts -> ShaderToyFragment.newInstance("hexagone")
+//            id.shader_arts -> ShaderToyFragment.newInstance("test")
             else -> GLES10Fragment()
         }.apply {
             requestedOrientation = orientation

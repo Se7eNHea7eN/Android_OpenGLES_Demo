@@ -6,6 +6,7 @@ import android.os.Bundle
 import asiainnovations.com.opengles_demo.GlShader
 import asiainnovations.com.opengles_demo.fragments.BaseGLFragment
 import asiainnovations.com.opengles_demo.getAssetAsString
+import com.asiainnovations.onlyu.video.gl.TextureRotationUtil
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -13,10 +14,16 @@ import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
 class ShaderToyFragment : BaseGLFragment() {
-    protected lateinit var shader: GlShader
+    companion object {
+        fun newInstance(shaderName: String): ShaderToyFragment =
+                ShaderToyFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("shaderName", shaderName)
+                    }
+                }
+    }
 
-    private var width: Int = 0
-    private var height: Int = 0
+    protected lateinit var shader: GlShader
 
     private var renderBeginTime = 0L
     private var lastFrameTime = 0L
@@ -29,16 +36,11 @@ class ShaderToyFragment : BaseGLFragment() {
     private var timeDeltaHandler = 0
 
     override val orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-    private var vertices = floatArrayOf(-1f, -1f,
-            -1f, 1f,
-            1f, -1f,
-            1f, 1f)
-
-    private val vertexBuffer: FloatBuffer = ByteBuffer.allocateDirect(vertices.size * 4)
+    private val vertexBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.CUBE.size * 4)
             .order(ByteOrder.nativeOrder())
             .asFloatBuffer()
             .apply {
-                put(vertices)
+                put(TextureRotationUtil.CUBE)
                 position(0)
             }
 
@@ -65,9 +67,6 @@ class ShaderToyFragment : BaseGLFragment() {
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
-        this.width = width
-        this.height = height
-
         glClearDepthf(1.0f)
         glEnable(GL_CULL_FACE)
         glEnable(GL_DEPTH_TEST)
@@ -100,15 +99,6 @@ class ShaderToyFragment : BaseGLFragment() {
 
         lastFrameTime = System.currentTimeMillis()
         renderBeginTime = System.currentTimeMillis()
-    }
-
-    companion object {
-        fun newInstance(shaderName: String): ShaderToyFragment =
-                ShaderToyFragment().apply {
-                    arguments = Bundle().apply {
-                        putString("shaderName", shaderName)
-                    }
-                }
     }
 
 

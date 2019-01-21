@@ -3,6 +3,7 @@ package asiainnovations.com.opengles_demo.fragments
 import android.content.pm.ActivityInfo
 import android.opengl.GLSurfaceView
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,14 @@ abstract class BaseGLFragment : Fragment(), GLSurfaceView.Renderer {
         val frameLayout = FrameLayout(context!!)
         glSurfaceView = createGLSurfaveView()
         frameLayout.addView(glSurfaceView)
+        Log.d("opengles_demo","${javaClass.simpleName} onCreateView")
         return frameLayout
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("opengles_demo","${javaClass.simpleName} onDestroyView")
     }
 
     protected open fun createGLSurfaveView(): GLSurfaceView =
