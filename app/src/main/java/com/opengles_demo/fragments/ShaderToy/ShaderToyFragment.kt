@@ -1,5 +1,6 @@
 package com.opengles_demo.fragments.ShaderToy
 
+import android.content.pm.ActivityInfo
 import android.opengl.GLES20.*
 import android.os.Bundle
 import asiainnovations.com.opengles_demo.GlShader
@@ -14,18 +15,21 @@ import javax.microedition.khronos.opengles.GL10
 class ShaderToyFragment : BaseGLFragment() {
     protected lateinit var shader: GlShader
 
-    var width: Int = 0
-    var height: Int = 0
+    private var width: Int = 0
+    private var height: Int = 0
 
-    var renderBeginTime = 0L
-    var lastFrameTime = 0L
-    var globalTimeHandler = 0
-    var resolutionHandler = 0
-    var timeHandler = 0
-    var timeDeltaHandler = 0
+    private var renderBeginTime = 0L
+    private var lastFrameTime = 0L
 
 
-    var vertices = floatArrayOf(-1f, -1f,
+    private var verticesHandler = 0
+    private var globalTimeHandler = 0
+    private var resolutionHandler = 0
+    private var timeHandler = 0
+    private var timeDeltaHandler = 0
+
+    override val orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+    private var vertices = floatArrayOf(-1f, -1f,
             -1f, 1f,
             1f, -1f,
             1f, 1f)
@@ -38,13 +42,16 @@ class ShaderToyFragment : BaseGLFragment() {
                 position(0)
             }
 
-
     override fun onDrawFrame(gl: GL10?) {
         val thisFrameTime = System.currentTimeMillis()
 
         glClearColor(0f, 0f, 0f, 0f)
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
-        shader.setVertexAttribArray("pos", 2, vertexBuffer)
+
+        if(verticesHandler >=0){
+            glEnableVertexAttribArray(verticesHandler)
+            glVertexAttribPointer(verticesHandler, 2, GL_FLOAT, false, 0, vertexBuffer)
+        }
         if (globalTimeHandler >= 0)
             glUniform1f(globalTimeHandler, System.currentTimeMillis().toFloat())
         if(timeHandler >= 0)
@@ -68,7 +75,7 @@ class ShaderToyFragment : BaseGLFragment() {
         glViewport(0, 0, width, height)
 
         if(resolutionHandler >= 0) {
-            var param = floatArrayOf(width.toFloat(), height.toFloat(), 1f)
+            val param = floatArrayOf(width.toFloat(), height.toFloat(), 1f)
 
             glUniformMatrix3fv(resolutionHandler, 1, false,ByteBuffer.allocateDirect(param.size * 4)
                     .order(ByteOrder.nativeOrder())
@@ -82,10 +89,13 @@ class ShaderToyFragment : BaseGLFragment() {
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
         shader = GlShader(vertexShader(), fragmentShader())
+
         globalTimeHandler = glGetUniformLocation(shader.program, "iGlobalTime")
-        resolutionHandler = glGetUniformLocation(shader.program, "iResolution")
         timeHandler = glGetUniformLocation(shader.program, "iTime")
         timeDeltaHandler = glGetUniformLocation(shader.program, "iTimeDelta")
+        verticesHandler  = glGetAttribLocation(shader.program,"pos")
+        resolutionHandler = glGetUniformLocation(shader.program, "iResolution")
+
         shader.useProgram()
 
         lastFrameTime = System.currentTimeMillis()
@@ -112,7 +122,7 @@ class ShaderToyFragment : BaseGLFragment() {
     }
 
     private fun fragmentImageShader(): String {
-        var shaderName = arguments!!.getString("shaderName")
+        val shaderName = arguments!!.getString("shaderName")
         return getAssetAsString(resources, "shadertoy/${shaderName}.glsl")!!
     }
 }

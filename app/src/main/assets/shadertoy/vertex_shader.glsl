@@ -1,4 +1,4 @@
-attribute vec4 pos;
+attribute vec2 pos;
 void
 main()
 {

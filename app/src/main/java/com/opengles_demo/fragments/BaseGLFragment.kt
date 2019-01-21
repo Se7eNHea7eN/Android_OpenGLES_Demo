@@ -1,5 +1,6 @@
 package asiainnovations.com.opengles_demo.fragments
 
+import android.content.pm.ActivityInfo
 import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -33,4 +34,6 @@ abstract class BaseGLFragment : Fragment(), GLSurfaceView.Renderer {
 
     protected open fun getEglContextClientVersion() = 2
     protected open fun getRenderMode() = GLSurfaceView.RENDERMODE_WHEN_DIRTY
+
+    open val orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 }

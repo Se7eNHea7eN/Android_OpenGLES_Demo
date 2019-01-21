@@ -5,11 +5,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.fragment.app.Fragment
-import asiainnovations.com.opengles_demo.fragments.CubeFragment
-import asiainnovations.com.opengles_demo.fragments.GLES10Fragment
-import asiainnovations.com.opengles_demo.fragments.ShaderFragment
-import asiainnovations.com.opengles_demo.fragments.TextureFragment
+import asiainnovations.com.opengles_demo.fragments.*
 import com.google.android.material.navigation.NavigationView
 import com.opengles_demo.R.id
 import com.opengles_demo.R.layout
@@ -43,7 +39,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    fun replaceFragment(fragment: Fragment) {
+    fun replaceFragment(fragment: BaseGLFragment) {
         supportFragmentManager.beginTransaction().replace(id.fragmentContainer, fragment).commit()
     }
 
@@ -57,8 +53,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             id.navigation_3d -> CubeFragment()
             id.navigation_texture_mapping -> TextureMappingFragment()
             id.navigation_lighting -> LightingFragment()
-            id.shader_arts -> ShaderToyFragment.newInstance("seascape")
+//            id.shader_arts -> ShaderToyFragment.newInstance("hexagone")
+            id.shader_arts -> ShaderToyFragment.newInstance("test")
             else -> GLES10Fragment()
+        }.apply {
+            requestedOrientation = orientation
         })
 
         drawer_layout.closeDrawer(GravityCompat.START)
