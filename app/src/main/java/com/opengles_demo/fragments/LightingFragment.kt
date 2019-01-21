@@ -49,7 +49,7 @@ class LightingFragment : MVPFragment() {
             Matrix.multiplyMM(tempMVMatrix, 0, viewMatrix, 0, lightModelMatrix, 0)
             val tempMVPMatrixM = FloatArray(16)
             Matrix.multiplyMM(tempMVPMatrixM, 0, projectionMatrix, 0, tempMVMatrix, 0)
-            lightShader.setUniformMatrix("uMVPMatrix", tempMVPMatrixM)
+            lightShader.setUniformMatrix4fv("uMVPMatrix", tempMVPMatrixM)
 
             glDrawArrays(GL_POINTS, 0, 1)
         }
@@ -105,8 +105,8 @@ class LightingFragment : MVPFragment() {
 
     override fun onDrawFrame() {
         shader.useProgram()
-        shader.setUniformMatrix("uMVPMatrix", mvpMatrix)
-        shader.setUniformMatrix("uMVMatrix", mvMatrix)
+        shader.setUniformMatrix4fv("uMVPMatrix", mvpMatrix)
+        shader.setUniformMatrix4fv("uMVMatrix", mvMatrix)
         shader.setVertexAttribArray("aPosition", 3, vertexBuffer)
         shader.setVertexAttribArray("aNormal", 3, normalBuffer)
         shader.setVertexAttribArray("aTextureCoordinate", 2, textureMappingBuffer)

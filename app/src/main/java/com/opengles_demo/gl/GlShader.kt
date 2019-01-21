@@ -8,7 +8,7 @@ import java.nio.FloatBuffer
 // Helper class for handling OpenGL shaders and shader programs.
 class GlShader {
 
-    private var program: Int = 0
+    public var program: Int = 0
 
     constructor(vertexSource: String, fragmentSource: String) {
         val vertexShader = compileShader(GL_VERTEX_SHADER, vertexSource)
@@ -80,7 +80,19 @@ class GlShader {
         GlUtil.checkNoGLES2Error("setVertexAttribArray")
         return location
     }
-    fun setUniformMatrix(label: String,matrix: FloatArray) : Int{
+
+    fun setUniformMatrix3fv(label: String, matrix: FloatArray) : Int{
+        if (program == -1) {
+            throw RuntimeException("The program has been released")
+        }
+
+        val location = getUniformLocation(label)
+        glUniformMatrix3fv(location, 1, false, matrix, 0)
+        GlUtil.checkNoGLES2Error("glUniformMatrix3fv")
+        return location
+    }
+
+    fun setUniformMatrix4fv(label: String, matrix: FloatArray) : Int{
         if (program == -1) {
             throw RuntimeException("The program has been released")
         }

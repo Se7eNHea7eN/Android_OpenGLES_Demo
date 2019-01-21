@@ -61,7 +61,7 @@ class ShaderFragment : BaseGLFragment() {
 
         Matrix.multiplyMM(mMVPMatrix, 0, mProjMatrix, 0, mVMatrix, 0);
 
-        shader.setUniformMatrix("uMVPMatrix", mMVPMatrix)
+        shader.setUniformMatrix4fv("uMVPMatrix", mMVPMatrix)
         shader.setVertexAttribArray("aPosition", 2, vertexBuffer)
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 3)
         glDisableVertexAttribArray(shader.getAttribLocation("aPosition"))

@@ -13,4 +13,6 @@
     <string name="nav_header_subtitle">zihao.liu@asiainnovations.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="filter">滤镜</string>
+    <string name="shader_arts">Shader Arts</string>
 </resources>

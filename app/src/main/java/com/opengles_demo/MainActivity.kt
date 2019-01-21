@@ -14,6 +14,7 @@ import com.google.android.material.navigation.NavigationView
 import com.opengles_demo.R.id
 import com.opengles_demo.R.layout
 import com.opengles_demo.fragments.LightingFragment
+import com.opengles_demo.fragments.ShaderToy.ShaderToyFragment
 import com.opengles_demo.fragments.TextureMappingFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -49,14 +50,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
-        when (item.itemId) {
-            id.navigation_gles10 -> replaceFragment(GLES10Fragment())
-            id.navigation_customizeshader -> replaceFragment(ShaderFragment())
-            id.navigation_texture -> replaceFragment(TextureFragment())
-            id.navigation_3d -> replaceFragment(CubeFragment())
-            id.navigation_texture_mapping -> replaceFragment(TextureMappingFragment())
-            id.navigation_lighting -> replaceFragment(LightingFragment())
-        }
+        replaceFragment(when (item.itemId) {
+            id.navigation_gles10 -> GLES10Fragment()
+            id.navigation_customizeshader -> ShaderFragment()
+            id.navigation_texture -> TextureFragment()
+            id.navigation_3d -> CubeFragment()
+            id.navigation_texture_mapping -> TextureMappingFragment()
+            id.navigation_lighting -> LightingFragment()
+            id.shader_arts -> ShaderToyFragment.newInstance("seascape")
+            else -> GLES10Fragment()
+        })
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true

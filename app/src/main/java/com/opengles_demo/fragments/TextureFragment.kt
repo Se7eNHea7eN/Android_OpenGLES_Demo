@@ -34,7 +34,7 @@ class TextureFragment : MVPFragment() {
             .asFloatBuffer()
             .apply {
                 put(TextureRotationUtil.CUBE)
-                position(0);
+                position(0)
             }
 
     private val textureMappingBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.TEXTURE_NO_ROTATION.size * 4)
