@@ -35,10 +35,12 @@
 
         <item
             android:title="@string/filter" >
-            <item
-                android:id="@+id/edgeDetect"
-                android:icon="@drawable/ic_menu_send"
-                android:title="边缘检测"/>
+            <menu>
+                <item
+                    android:id="@+id/edgeDetect"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="边缘检测"/>
+            </menu>
         </item>
 
         <item android:title="@string/shadertoy">
@@ -53,16 +55,25 @@
                     android:icon="@drawable/ic_menu_send"
                     android:title="Heartbeat"/>
 
+                <!--<item-->
+                    <!--android:id="@+id/seascape"-->
+                    <!--android:icon="@drawable/ic_menu_send"-->
+                    <!--android:title="Seascape"/>-->
 
-                <item
-                    android:id="@+id/seascape"
-                    android:icon="@drawable/ic_menu_send"
-                    android:title="Seascape"/>
+                <!--<item-->
+                <!--android:id="@+id/cloud"-->
+                <!--android:icon="@drawable/ic_menu_send"-->
+                <!--android:title="Cloud"/>-->
 
                 <item
                     android:id="@+id/hexagone"
                     android:icon="@drawable/ic_menu_send"
                     android:title="Hexagone"/>
+
+                <item
+                    android:id="@+id/goo"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="Goo"/>
             </menu>
         </item>
     </group>

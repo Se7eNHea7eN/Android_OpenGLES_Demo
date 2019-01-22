@@ -100,14 +100,11 @@ class ShaderToyFragment : BaseGLFragment() {
         resolutionHandler = glGetUniformLocation(shader.program, "iResolution")
         frameHandler = glGetUniformLocation(shader.program,"iFrame")
 
-
         shader.useProgram()
 
         lastFrameTime = System.currentTimeMillis()
         renderBeginTime = System.currentTimeMillis()
     }
-
-
 
     private fun vertexShader() = getAssetAsString(resources, "shadertoy/vertex_shader.glsl")!!
 

@@ -1,31 +1,46 @@
 package com.opengles_demo
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import asiainnovations.com.opengles_demo.fragments.*
 import com.google.android.material.navigation.NavigationView
+import com.gyf.barlibrary.BarHide
+import com.gyf.barlibrary.ImmersionBar
 import com.opengles_demo.R.id
-import com.opengles_demo.R.layout
 import com.opengles_demo.fragments.LightingFragment
 import com.opengles_demo.fragments.ShaderToy.ShaderToyFragment
 import com.opengles_demo.fragments.TextureMappingFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
+
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layout.activity_main)
-       // setSupportActionBar(toolbar)
+        setContentView(R.layout.activity_main)
+        ImmersionBar.with(this)
+                .transparentStatusBar()  //透明状态栏，
+                .statusBarColor(android.R.color.transparent)
+                .statusBarAlpha(1f)  //状态栏透明度，不写默认0.0f
+                .hideBar(BarHide.FLAG_HIDE_STATUS_BAR)  //隐藏状态栏或导航栏或两者，不写默认不隐藏
+                .init()
 
-        //val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        //drawer_layout.addDrawerListener(toggle)
-       // toggle.syncState()
         drawer_layout.openDrawer(GravityCompat.START)
 
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        // 如果你的app可以横竖屏切换，并且适配4.4或者emui3手机请务必在onConfigurationChanged方法里添加这句话
+        ImmersionBar.with(this).init()
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        ImmersionBar.with(this).destroy()
     }
 
     override fun onBackPressed() {
@@ -51,10 +66,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             id.navigation_texture_mapping -> TextureMappingFragment()
             id.navigation_lighting -> LightingFragment()
             id.gradient -> ShaderToyFragment.newInstance("gradient")
-            id.seascape -> ShaderToyFragment.newInstance("seascape")
+            //id.seascapne -> ShaderToyFragment.newInstance("seascape")
             id.heartbeat -> ShaderToyFragment.newInstance("heartbeat")
             id.hexagone -> ShaderToyFragment.newInstance("hexagone")
-
+            id.goo -> ShaderToyFragment.newInstance("goo")
+//            id.cloud -> ShaderToyFragment.newInstance("cloudy")
             else -> GLES10Fragment()
         }.apply {
             requestedOrientation = orientation
