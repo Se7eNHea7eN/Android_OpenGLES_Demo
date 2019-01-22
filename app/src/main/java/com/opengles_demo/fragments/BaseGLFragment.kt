@@ -28,10 +28,10 @@ abstract class BaseGLFragment : Fragment(), GLSurfaceView.Renderer {
 
     protected open fun createGLSurfaveView(): GLSurfaceView =
             GLSurfaceView(context!!).apply {
-                setPreserveEGLContextOnPause(true)
+                preserveEGLContextOnPause = true
                 setEGLContextClientVersion(getEglContextClientVersion())
                 setRenderer(this@BaseGLFragment)
-                setRenderMode(getRenderMode())
+                renderMode = getRenderMode()
             }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {

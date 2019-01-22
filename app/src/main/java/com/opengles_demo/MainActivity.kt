@@ -2,7 +2,6 @@ package com.opengles_demo
 
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import asiainnovations.com.opengles_demo.fragments.*
@@ -13,18 +12,17 @@ import com.opengles_demo.fragments.LightingFragment
 import com.opengles_demo.fragments.ShaderToy.ShaderToyFragment
 import com.opengles_demo.fragments.TextureMappingFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
-        setSupportActionBar(toolbar)
+       // setSupportActionBar(toolbar)
 
-        val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
+        //val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        //drawer_layout.addDrawerListener(toggle)
+       // toggle.syncState()
         drawer_layout.openDrawer(GravityCompat.START)
 
         nav_view.setNavigationItemSelectedListener(this)
@@ -52,8 +50,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             id.navigation_3d -> CubeFragment()
             id.navigation_texture_mapping -> TextureMappingFragment()
             id.navigation_lighting -> LightingFragment()
-            id.shader_arts -> ShaderToyFragment.newInstance("hexagone")
-//            id.shader_arts -> ShaderToyFragment.newInstance("test")
+            id.gradient -> ShaderToyFragment.newInstance("gradient")
+            id.seascape -> ShaderToyFragment.newInstance("seascape")
+            id.heartbeat -> ShaderToyFragment.newInstance("heartbeat")
+            id.hexagone -> ShaderToyFragment.newInstance("hexagone")
+
             else -> GLES10Fragment()
         }.apply {
             requestedOrientation = orientation

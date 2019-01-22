@@ -34,15 +34,37 @@
             android:title="@string/lighting" />
 
         <item
-            android:id="@+id/camera_filter"
-            android:icon="@drawable/ic_menu_send"
-            android:title="@string/filter" />
+            android:title="@string/filter" >
+            <item
+                android:id="@+id/edgeDetect"
+                android:icon="@drawable/ic_menu_send"
+                android:title="边缘检测"/>
+        </item>
 
-        <item
-            android:id="@+id/shader_arts"
-            android:icon="@drawable/ic_menu_send"
-            android:title="@string/shader_arts" />
+        <item android:title="@string/shadertoy">
+            <menu>
+                <item
+                    android:id="@+id/gradient"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="Gradient"/>
 
+                <item
+                    android:id="@+id/heartbeat"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="Heartbeat"/>
+
+
+                <item
+                    android:id="@+id/seascape"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="Seascape"/>
+
+                <item
+                    android:id="@+id/hexagone"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="Hexagone"/>
+            </menu>
+        </item>
     </group>
 
 

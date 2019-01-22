@@ -154,8 +154,7 @@ class GlShader {
             val compileStatus = intArrayOf(GL_FALSE)
             glGetShaderiv(shader, GL_COMPILE_STATUS, compileStatus, 0)
             if (compileStatus[0] != GL_TRUE) {
-                Log.e(TAG, "Could not compile shader " + shaderType + ":" +
-                        glGetShaderInfoLog(shader))
+                Log.e(TAG, "Could not compile shader " + shaderType + ":" + glGetShaderInfoLog(shader))
                 throw RuntimeException(glGetShaderInfoLog(shader))
             }
             GlUtil.checkNoGLES2Error("compileShader")

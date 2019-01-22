@@ -34,8 +34,15 @@ class ShaderToyFragment : BaseGLFragment() {
     private var resolutionHandler = 0
     private var timeHandler = 0
     private var timeDeltaHandler = 0
+    private var frameHandler = 0
 
+
+    private var surfaceWidth = 0
+    private var surfaceHeight = 0
+
+    private var frameCount = 0
     override val orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+
     private val vertexBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.CUBE.size * 4)
             .order(ByteOrder.nativeOrder())
             .asFloatBuffer()
@@ -55,11 +62,13 @@ class ShaderToyFragment : BaseGLFragment() {
             glVertexAttribPointer(verticesHandler, 2, GL_FLOAT, false, 0, vertexBuffer)
         }
         if (globalTimeHandler >= 0)
-            glUniform1f(globalTimeHandler, System.currentTimeMillis().toFloat())
+            glUniform1f(globalTimeHandler, (thisFrameTime - renderBeginTime) /1000f)
         if(timeHandler >= 0)
-            glUniform1f(timeHandler,(thisFrameTime - renderBeginTime).toFloat())
+            glUniform1f(timeHandler,(thisFrameTime - renderBeginTime) /1000f)
         if(timeDeltaHandler >= 0)
-            glUniform1f(timeDeltaHandler,(thisFrameTime - lastFrameTime).toFloat())
+            glUniform1f(timeDeltaHandler,(thisFrameTime - lastFrameTime)/1000f)
+        if(frameHandler >= 0)
+            glUniform1i(frameHandler,frameCount++)
 
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4)
 
@@ -71,18 +80,13 @@ class ShaderToyFragment : BaseGLFragment() {
         glEnable(GL_CULL_FACE)
         glEnable(GL_DEPTH_TEST)
         glDepthFunc(GL_LEQUAL)
-        glViewport(0, 0, width, height)
+        //glViewport(0, 0, width, height)
+        surfaceWidth = width
+        surfaceHeight = height
 
         if(resolutionHandler >= 0) {
-            val param = floatArrayOf(width.toFloat(), height.toFloat(), 1f)
-
-            glUniformMatrix3fv(resolutionHandler, 1, false,ByteBuffer.allocateDirect(param.size * 4)
-                    .order(ByteOrder.nativeOrder())
-                    .asFloatBuffer()
-                    .apply {
-                        put(param)
-                        position(0)
-                    } )
+            val param = floatArrayOf(surfaceWidth.toFloat(), surfaceHeight.toFloat(), 1f)
+            glUniform3fv(resolutionHandler,1,param,0)
         }
     }
 
@@ -94,6 +98,8 @@ class ShaderToyFragment : BaseGLFragment() {
         timeDeltaHandler = glGetUniformLocation(shader.program, "iTimeDelta")
         verticesHandler  = glGetAttribLocation(shader.program,"pos")
         resolutionHandler = glGetUniformLocation(shader.program, "iResolution")
+        frameHandler = glGetUniformLocation(shader.program,"iFrame")
+
 
         shader.useProgram()
 
@@ -107,7 +113,9 @@ class ShaderToyFragment : BaseGLFragment() {
 
     private fun fragmentShader(): String {
         return getAssetAsString(resources, "shadertoy/fragment_header.glsl")!! +
+                '\n' +
                 fragmentImageShader() +
+                '\n' +
                 getAssetAsString(resources, "shadertoy/fragment_footer.glsl")!!
     }
 
