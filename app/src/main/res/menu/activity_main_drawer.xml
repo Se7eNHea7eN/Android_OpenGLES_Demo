@@ -70,6 +70,17 @@
                     android:icon="@drawable/ic_menu_send"
                     android:title="Hexagone"/>
 
+
+                <item
+                    android:id="@+id/cloud2d"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="2D Cloud"/>
+
+                <item
+                    android:id="@+id/mandelbrot"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="Mandelbrot"/>
+
                 <item
                     android:id="@+id/goo"
                     android:icon="@drawable/ic_menu_send"

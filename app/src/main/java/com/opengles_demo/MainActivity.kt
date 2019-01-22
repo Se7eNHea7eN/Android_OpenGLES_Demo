@@ -69,6 +69,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             //id.seascapne -> ShaderToyFragment.newInstance("seascape")
             id.heartbeat -> ShaderToyFragment.newInstance("heartbeat")
             id.hexagone -> ShaderToyFragment.newInstance("hexagone")
+            id.cloud2d -> ShaderToyFragment.newInstance("2d_cloud")
+            id.mandelbrot -> ShaderToyFragment.newInstance("mandelbrot")
             id.goo -> ShaderToyFragment.newInstance("goo")
 //            id.cloud -> ShaderToyFragment.newInstance("cloudy")
             else -> GLES10Fragment()
