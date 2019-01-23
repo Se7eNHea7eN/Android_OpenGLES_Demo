@@ -10,10 +10,12 @@ import com.google.android.material.navigation.NavigationView
 import com.gyf.barlibrary.BarHide
 import com.gyf.barlibrary.ImmersionBar
 import com.opengles_demo.R.id
+import com.opengles_demo.fragments.CameraFilterFragment
 import com.opengles_demo.fragments.LightingFragment
-import com.opengles_demo.fragments.ShaderToy.ShaderToyFragment
+import com.opengles_demo.fragments.ShaderToyFragment
 import com.opengles_demo.fragments.TextureMappingFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -22,11 +24,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ImmersionBar.with(this)
-                .transparentStatusBar()  //透明状态栏，
-                .statusBarColor(android.R.color.transparent)
-                .statusBarAlpha(1f)  //状态栏透明度，不写默认0.0f
-                .hideBar(BarHide.FLAG_HIDE_STATUS_BAR)  //隐藏状态栏或导航栏或两者，不写默认不隐藏
+                .transparentBar()  //透明状态栏，
+                .barColor(android.R.color.transparent)
+                .barAlpha(1f)  //状态栏透明度，不写默认0.0f
+                .hideBar(BarHide.FLAG_HIDE_BAR)  //隐藏状态栏或导航栏或两者，不写默认不隐藏
                 .init()
+
+        dummy.setOnClickListener {
+            if(!drawer_layout.isDrawerOpen(nav_view))
+                drawer_layout.openDrawer(GravityCompat.START)
+        }
 
         drawer_layout.openDrawer(GravityCompat.START)
 
@@ -66,13 +73,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             id.navigation_texture_mapping -> TextureMappingFragment()
             id.navigation_lighting -> LightingFragment()
             id.gradient -> ShaderToyFragment.newInstance("gradient")
-            //id.seascapne -> ShaderToyFragment.newInstance("seascape")
+            id.seascape -> ShaderToyFragment.newInstance("seascape")
             id.heartbeat -> ShaderToyFragment.newInstance("heartbeat")
             id.hexagone -> ShaderToyFragment.newInstance("hexagone")
             id.cloud2d -> ShaderToyFragment.newInstance("2d_cloud")
             id.mandelbrot -> ShaderToyFragment.newInstance("mandelbrot")
             id.goo -> ShaderToyFragment.newInstance("goo")
-//            id.cloud -> ShaderToyFragment.newInstance("cloudy")
+            id.cloud -> ShaderToyFragment.newInstance("cloudy")
+            id.edgeDetect -> CameraFilterFragment()
             else -> GLES10Fragment()
         }.apply {
             requestedOrientation = orientation

@@ -44,6 +44,7 @@ object GlUtil {
         GLES20.glTexParameterf(target, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE.toFloat())
         GLES20.glTexParameterf(target, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE.toFloat())
         checkNoGLES2Error("generateTexture")
+
         return textureId
     }
 

@@ -1,4 +1,4 @@
-package com.opengles_demo.fragments.ShaderToy
+package com.opengles_demo.fragments
 
 import android.content.pm.ActivityInfo
 import android.opengl.GLES20.*

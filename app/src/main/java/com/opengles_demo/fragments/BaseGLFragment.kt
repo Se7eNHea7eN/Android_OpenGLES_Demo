@@ -42,7 +42,7 @@ abstract class BaseGLFragment : Fragment(), GLSurfaceView.Renderer {
     }
 
     protected open fun getEglContextClientVersion() = 2
-    protected open fun getRenderMode() = GLSurfaceView.RENDERMODE_WHEN_DIRTY
+    protected open fun getRenderMode() = GLSurfaceView.RENDERMODE_CONTINUOUSLY
 
     open val orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 }
