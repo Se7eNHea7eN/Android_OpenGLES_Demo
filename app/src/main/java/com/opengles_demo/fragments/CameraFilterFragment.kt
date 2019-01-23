@@ -3,7 +3,6 @@ package com.opengles_demo.fragments
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.ImageFormat
 import android.graphics.Point
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.*
@@ -14,6 +13,7 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.util.Size
 import android.view.Surface
+import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import asiainnovations.com.opengles_demo.GlShader
 import asiainnovations.com.opengles_demo.fragments.BaseGLFragment
@@ -28,6 +28,8 @@ import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
+
+
 
 class CameraFilterFragment : BaseGLFragment() {
     companion object {
@@ -138,20 +140,26 @@ class CameraFilterFragment : BaseGLFragment() {
             val map = cameraCharacteristic.get(
                     CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
 
-            val displaySize = Point()
-            activity!!.windowManager.defaultDisplay.getSize(displaySize)
 
-            val rotatedPreviewWidth = 1280
-            val rotatedPreviewHeight = 720
+            val displaySize = Point()
+
+
+            val wm = context!!.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            wm.defaultDisplay.getRealSize(displaySize)
+
+            //activity!!.windowManager.defaultDisplay.getSize(displaySize)
+
+            val rotatedPreviewWidth = 1080 * displaySize.y / displaySize.x
+            val rotatedPreviewHeight = 1080
             val maxPreviewWidth = displaySize.y
             val maxPreviewHeight = displaySize.x
-            val largest = Collections.max(
-                    Arrays.asList(*map.getOutputSizes(ImageFormat.JPEG)),
-                    CompareSizesByArea())
+//            val largest = Collections.max(
+//                    Arrays.asList(*map.getOutputSizes(ImageFormat.JPEG)),
+//                    CompareSizesByArea())
 
             previewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture::class.java),
                     rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth,
-                    maxPreviewHeight, largest)
+                    maxPreviewHeight, Size(displaySize.y,displaySize.x))
 
             openCamera(cameraId!!, object : CameraDevice.StateCallback() {
                 override fun onOpened(camera: CameraDevice) {
@@ -163,7 +171,7 @@ class CameraFilterFragment : BaseGLFragment() {
                             cameraTexture = GlUtil.generateTexture(GL_TEXTURE_EXTERNAL_OES)
                         }
                         surfaceTexture = SurfaceTexture(cameraTexture)
-                        surfaceTexture!!.setDefaultBufferSize(previewSize.height, previewSize.width)
+                        surfaceTexture!!.setDefaultBufferSize(previewSize.width, previewSize.height)
                         surfaceTexture!!.setOnFrameAvailableListener {
                             glSurfaceView!!.requestRender()
                         }
@@ -206,7 +214,6 @@ class CameraFilterFragment : BaseGLFragment() {
                     cameraDevice = null
                 }
             }, mBackgroundHandler)
-
         }
     }
 
@@ -255,7 +262,7 @@ class CameraFilterFragment : BaseGLFragment() {
     private val textureMappingBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.TEXTURE_ROTATED_270.size * 4)
             .order(ByteOrder.nativeOrder())
             .asFloatBuffer().apply {
-                put(TextureRotationUtil.TEXTURE_ROTATED_270)
+                put(TextureRotationUtil.getRotation(270,false,true))
                 position(0)
             }
 
@@ -298,6 +305,13 @@ class CameraFilterFragment : BaseGLFragment() {
 
         shader.setVertexAttribArray("position", 2, vertexBuffer)
         shader.setVertexAttribArray("inputTextureCoordinate", 2, textureMappingBuffer)
+
+        glGetUniformLocation(shader.program, "iResolution").apply {
+            if(this >=0 ){
+                val param = floatArrayOf(previewSize.height.toFloat(), previewSize.width.toFloat(), 1f)
+                glUniform3fv(this,1,param,0)
+            }
+        }
 
     }
 

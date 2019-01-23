@@ -40,6 +40,11 @@
                     android:id="@+id/edgeDetect"
                     android:icon="@drawable/ic_menu_send"
                     android:title="边缘检测"/>
+
+                <item
+                    android:id="@+id/pixelize"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="像素化"/>
             </menu>
         </item>
 

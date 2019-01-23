@@ -81,6 +81,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             id.goo -> ShaderToyFragment.newInstance("goo")
             id.cloud -> ShaderToyFragment.newInstance("cloudy")
             id.edgeDetect -> CameraFilterFragment.newInstance("edge_detect")
+            id.pixelize -> CameraFilterFragment.newInstance("pixelize")
             else -> GLES10Fragment()
         }.apply {
             requestedOrientation = orientation
