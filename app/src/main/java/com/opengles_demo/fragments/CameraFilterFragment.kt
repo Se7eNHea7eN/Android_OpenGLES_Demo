@@ -9,6 +9,7 @@ import android.graphics.SurfaceTexture
 import android.hardware.camera2.*
 import android.opengl.GLES11Ext.GL_TEXTURE_EXTERNAL_OES
 import android.opengl.GLES20.*
+import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Size
@@ -29,6 +30,16 @@ import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
 class CameraFilterFragment : BaseGLFragment() {
+    companion object {
+        fun newInstance(shaderName: String): CameraFilterFragment {
+            return CameraFilterFragment().apply {
+                arguments = Bundle().apply {
+                    putString("ShaderName", shaderName)
+                }
+            }
+        }
+    }
+
     protected lateinit var shader: GlShader
 
     private var cameraId: String? = null
@@ -171,7 +182,7 @@ class CameraFilterFragment : BaseGLFragment() {
                                         previewRequestBuilder!!.set(CaptureRequest.CONTROL_AF_MODE,
                                                 CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
                                         captureRequest = previewRequestBuilder!!.build()
-                                        captureSession!!.setRepeatingRequest(captureRequest!!,null,mBackgroundHandler)
+                                        captureSession!!.setRepeatingRequest(captureRequest!!, null, mBackgroundHandler)
                                     } catch (e: CameraAccessException) {
                                         e.printStackTrace()
                                     }
@@ -194,11 +205,12 @@ class CameraFilterFragment : BaseGLFragment() {
                     cameraDevice?.close()
                     cameraDevice = null
                 }
-            },mBackgroundHandler)
+            }, mBackgroundHandler)
 
         }
     }
-    private fun closeCamera(){
+
+    private fun closeCamera() {
         try {
             mCameraOpenCloseLock.acquire()
             captureSession?.close()
@@ -221,14 +233,17 @@ class CameraFilterFragment : BaseGLFragment() {
         } catch (e: InterruptedException) {
         }
     }
+
     override fun onResume() {
         super.onResume()
         openCamera()
     }
-    override fun onPause(){
+
+    override fun onPause() {
         super.onPause()
         closeCamera()
     }
+
     private val vertexBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.CUBE.size * 4)
             .order(ByteOrder.nativeOrder())
             .asFloatBuffer()
@@ -243,18 +258,19 @@ class CameraFilterFragment : BaseGLFragment() {
                 put(TextureRotationUtil.TEXTURE_ROTATED_270)
                 position(0)
             }
+
     override fun onDrawFrame(gl: GL10?) {
         surfaceTexture?.updateTexImage()
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f)
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
-        if(cameraTexture != -1) {
+        if (cameraTexture != -1) {
             //激活纹理单元0
             glActiveTexture(GL_TEXTURE0)
             //绑定纹理
             glBindTexture(GL_TEXTURE_EXTERNAL_OES, cameraTexture)
             //设置到0号纹理单元
-            glUniform1i(shader.getUniformLocation("inputImageTexture"), 0)
+            glUniform1i(shader.getUniformLocation("iChannel0"), 0)
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4)
         }
     }
@@ -286,12 +302,12 @@ class CameraFilterFragment : BaseGLFragment() {
     }
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
-        shader = GlShader( getAssetAsString(resources, "oes/vertex_shader.glsl")!!,
-                getAssetAsString(resources, "oes/fragment_shader.glsl")!!)
+        shader = GlShader(getAssetAsString(resources, "camera/vertex_shader.glsl")!!,
+                getAssetAsString(resources, "camera/fragment_header.glsl")!! +
+                        getAssetAsString(resources, "camera/${arguments!!.getString("ShaderName")}.glsl")!! +
+                        getAssetAsString(resources, "camera/fragment_footer.glsl")!!
+        )
         shader.useProgram()
-
-
-
     }
 
 }
