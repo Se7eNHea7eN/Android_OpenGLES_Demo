@@ -5,5 +5,6 @@ precision highp float;
 
 uniform vec3 iResolution;
 varying vec2 textureCoordinate;
+uniform float iGlobalTime;
 
 uniform samplerExternalOES iChannel0;

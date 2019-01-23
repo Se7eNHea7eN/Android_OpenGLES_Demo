@@ -16,6 +16,9 @@
 // https://soundcloud.com/ahmed-gado-1/sad-piano-alone-in-the-dark
 // Rain sounds:
 // https://soundcloud.com/elirtmusic/sleeping-sound-rain-and-thunder-1-hours
+//#iChannel0 http://pic26.nipic.com/20121227/10193203_131357536000_2.jpg
+#iChannel0 http://img.bimg.126.net/photo/ZZ5EGyuUCp9hBPk6_s4Ehg==/5727171351132208489.jpg
+
 #define S(a, b, t) smoothstep(a, b, t)
 //#define CHEAP_NORMALS
 #define HAS_HEART

@@ -56,7 +56,7 @@ class CameraFilterFragment : BaseGLFragment() {
     private var captureRequest: CaptureRequest? = null
     private var mBackgroundThread: HandlerThread? = null
     private var mBackgroundHandler: Handler? = null
-
+    private var startRenterTime = 0L
     /**
      * Compares two `Size`s based on their areas.
      */
@@ -140,19 +140,17 @@ class CameraFilterFragment : BaseGLFragment() {
             val map = cameraCharacteristic.get(
                     CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
 
-
             val displaySize = Point()
-
 
             val wm = context!!.getSystemService(Context.WINDOW_SERVICE) as WindowManager
             wm.defaultDisplay.getRealSize(displaySize)
 
             //activity!!.windowManager.defaultDisplay.getSize(displaySize)
 
-            val rotatedPreviewWidth = 1080 * displaySize.y / displaySize.x
-            val rotatedPreviewHeight = 1080
-            val maxPreviewWidth = displaySize.y
-            val maxPreviewHeight = displaySize.x
+            val rotatedPreviewWidth = 640 * displaySize.y / displaySize.x
+            val rotatedPreviewHeight = 640
+            val maxPreviewWidth = 1080 * displaySize.y / displaySize.x
+            val maxPreviewHeight = 1080
 //            val largest = Collections.max(
 //                    Arrays.asList(*map.getOutputSizes(ImageFormat.JPEG)),
 //                    CompareSizesByArea())
@@ -280,6 +278,13 @@ class CameraFilterFragment : BaseGLFragment() {
             glUniform1i(shader.getUniformLocation("iChannel0"), 0)
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4)
         }
+
+        glGetUniformLocation(shader.program, "iGlobalTime").apply {
+            if(this >=0 ){
+                glUniform1f(this,(System.currentTimeMillis() - startRenterTime)/1000f)
+            }
+        }
+
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
@@ -318,10 +323,13 @@ class CameraFilterFragment : BaseGLFragment() {
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
         shader = GlShader(getAssetAsString(resources, "camera/vertex_shader.glsl")!!,
                 getAssetAsString(resources, "camera/fragment_header.glsl")!! +
+                        "\n" +
                         getAssetAsString(resources, "camera/${arguments!!.getString("ShaderName")}.glsl")!! +
+                        "\n" +
                         getAssetAsString(resources, "camera/fragment_footer.glsl")!!
         )
         shader.useProgram()
+        startRenterTime = System.currentTimeMillis()
     }
 
 }

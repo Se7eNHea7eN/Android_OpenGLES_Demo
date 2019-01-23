@@ -45,6 +45,16 @@
                     android:id="@+id/pixelize"
                     android:icon="@drawable/ic_menu_send"
                     android:title="像素化"/>
+
+                <item
+                    android:id="@+id/waterColor"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="水彩画"/>
+
+                <item
+                    android:id="@+id/aberration"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="灵魂出窍"/>
             </menu>
         </item>
 
