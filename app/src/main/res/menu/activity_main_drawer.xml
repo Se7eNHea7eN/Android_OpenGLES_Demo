@@ -64,7 +64,10 @@
                     android:id="@+id/gradient"
                     android:icon="@drawable/ic_menu_send"
                     android:title="Gradient"/>
-
+                <item
+                    android:id="@+id/gradient2"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="Gradient2"/>
                 <item
                     android:id="@+id/heartbeat"
                     android:icon="@drawable/ic_menu_send"

@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.content_main.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
+    var initFlag = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .barAlpha(1f)  //状态栏透明度，不写默认0.0f
                 .hideBar(BarHide.FLAG_HIDE_BAR)  //隐藏状态栏或导航栏或两者，不写默认不隐藏
                 .init()
-
         dummy.setOnClickListener {
             if(!drawer_layout.isDrawerOpen(nav_view))
                 drawer_layout.openDrawer(GravityCompat.START)
@@ -38,6 +37,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.openDrawer(GravityCompat.START)
 
         nav_view.setNavigationItemSelectedListener(this)
+        if(!initFlag){
+            initFlag = true
+            replaceFragment(ShaderToyFragment.newInstance("heartbeat"))
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -73,6 +76,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             id.navigation_texture_mapping -> TextureMappingFragment()
             id.navigation_lighting -> LightingFragment()
             id.gradient -> ShaderToyFragment.newInstance("gradient")
+            id.gradient2 -> ShaderToyFragment.newInstance("gradient2")
             id.seascape -> ShaderToyFragment.newInstance("seascape")
             id.heartbeat -> ShaderToyFragment.newInstance("heartbeat")
             id.hexagone -> ShaderToyFragment.newInstance("hexagone")

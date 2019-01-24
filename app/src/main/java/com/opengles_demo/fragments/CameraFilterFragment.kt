@@ -7,10 +7,12 @@ import android.graphics.Point
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.*
 import android.opengl.GLES11Ext.GL_TEXTURE_EXTERNAL_OES
+import android.opengl.GLES20
 import android.opengl.GLES20.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
+import android.util.Log
 import android.util.Size
 import android.view.Surface
 import android.view.WindowManager
@@ -147,10 +149,11 @@ class CameraFilterFragment : BaseGLFragment() {
 
             //activity!!.windowManager.defaultDisplay.getSize(displaySize)
 
-            val rotatedPreviewWidth = 640 * displaySize.y / displaySize.x
-            val rotatedPreviewHeight = 640
-            val maxPreviewWidth = 1080 * displaySize.y / displaySize.x
-            val maxPreviewHeight = 1080
+            val rotatedPreviewWidth = 720 * displaySize.y / displaySize.x
+            val rotatedPreviewHeight = 720
+            val maxPreviewWidth = displaySize.y
+            val maxPreviewHeight = displaySize.x
+
 //            val largest = Collections.max(
 //                    Arrays.asList(*map.getOutputSizes(ImageFormat.JPEG)),
 //                    CompareSizesByArea())
@@ -158,6 +161,7 @@ class CameraFilterFragment : BaseGLFragment() {
             previewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture::class.java),
                     rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth,
                     maxPreviewHeight, Size(displaySize.y,displaySize.x))
+            Log.d("debug","previewSize = ${previewSize.width} , ${previewSize.height}")
 
             openCamera(cameraId!!, object : CameraDevice.StateCallback() {
                 override fun onOpened(camera: CameraDevice) {
@@ -237,6 +241,12 @@ class CameraFilterFragment : BaseGLFragment() {
             mBackgroundHandler = null
         } catch (e: InterruptedException) {
         }
+        glSurfaceView!!.queueEvent {
+            GLES20.glDeleteTextures(1, intArrayOf(cameraTexture), 0)
+            cameraTexture = -1
+            surfaceTexture?.release()
+            surfaceTexture = null
+        }
     }
 
     override fun onResume() {
@@ -249,7 +259,7 @@ class CameraFilterFragment : BaseGLFragment() {
         closeCamera()
     }
 
-    private val vertexBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.CUBE.size * 4)
+    private var vertexBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.CUBE.size * 4)
             .order(ByteOrder.nativeOrder())
             .asFloatBuffer()
             .apply {
@@ -285,31 +295,32 @@ class CameraFilterFragment : BaseGLFragment() {
             }
         }
 
+        shader.setVertexAttribArray("position", 2, vertexBuffer)
+        shader.setVertexAttribArray("inputTextureCoordinate", 2, textureMappingBuffer)
+
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
         glViewport(0, 0, width, height)
 
-//        val ratio1 = width.toFloat() / previewSize.height
-//        val ratio2 = height.toFloat() / previewSize.width
-//        val ratioMax = Math.min(ratio1, ratio2)
-//        val imageWidthNew = Math.round(previewSize.height * ratioMax)
-//        val imageHeightNew = Math.round(previewSize.width * ratioMax)
-//
-//        val ratioWidth = imageWidthNew / width.toFloat()
-//        val ratioHeight = imageHeightNew / height.toFloat()
-//
-//        val cube = floatArrayOf(TextureRotationUtil.CUBE[0] / ratioHeight, TextureRotationUtil.CUBE[1] / ratioWidth, TextureRotationUtil.CUBE[2] / ratioHeight, TextureRotationUtil.CUBE[3] / ratioWidth, TextureRotationUtil.CUBE[4] / ratioHeight, TextureRotationUtil.CUBE[5] / ratioWidth, TextureRotationUtil.CUBE[6] / ratioHeight, TextureRotationUtil.CUBE[7] / ratioWidth)
-//
-//        val mVertexBuffer = ByteBuffer.allocateDirect(cube.size * 4)
-//                .order(ByteOrder.nativeOrder())
-//                .asFloatBuffer()
-//
-//        mVertexBuffer.clear()
-//        mVertexBuffer.put(cube).position(0)
+        val ratio1 = width.toFloat() / previewSize.height
+        val ratio2 = height.toFloat() / previewSize.width
+        val ratioMax = Math.min(ratio1, ratio2)
+        val imageWidthNew = Math.round(previewSize.height * ratioMax)
+        val imageHeightNew = Math.round(previewSize.width * ratioMax)
 
-        shader.setVertexAttribArray("position", 2, vertexBuffer)
-        shader.setVertexAttribArray("inputTextureCoordinate", 2, textureMappingBuffer)
+        val ratioWidth = imageWidthNew / width.toFloat()
+        val ratioHeight = imageHeightNew / height.toFloat()
+
+        val cube = floatArrayOf(TextureRotationUtil.CUBE[0] / ratioHeight, TextureRotationUtil.CUBE[1] / ratioWidth, TextureRotationUtil.CUBE[2] / ratioHeight, TextureRotationUtil.CUBE[3] / ratioWidth, TextureRotationUtil.CUBE[4] / ratioHeight, TextureRotationUtil.CUBE[5] / ratioWidth, TextureRotationUtil.CUBE[6] / ratioHeight, TextureRotationUtil.CUBE[7] / ratioWidth)
+
+        vertexBuffer = ByteBuffer.allocateDirect(cube.size * 4)
+                .order(ByteOrder.nativeOrder())
+                .asFloatBuffer()
+
+        vertexBuffer.clear()
+        vertexBuffer.put(cube).position(0)
+
 
         glGetUniformLocation(shader.program, "iResolution").apply {
             if(this >=0 ){
