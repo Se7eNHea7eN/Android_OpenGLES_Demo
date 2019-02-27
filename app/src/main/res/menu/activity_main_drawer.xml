@@ -54,7 +54,12 @@
                 <item
                     android:id="@+id/aberration"
                     android:icon="@drawable/ic_menu_send"
-                    android:title="灵魂出窍"/>
+                    android:title="幻影"/>
+
+                <item
+                    android:id="@+id/relief"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="浮雕"/>
             </menu>
         </item>
 

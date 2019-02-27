@@ -88,6 +88,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             id.pixelize -> CameraFilterFragment.newInstance("pixelize")
             id.waterColor -> CameraFilterFragment.newInstance("water_color")
             id.aberration -> CameraFilterFragment.newInstance("chromatic_aberration")
+            id.relief -> CameraFilterFragment.newInstance("relief")
             else -> GLES10Fragment()
         }.apply {
             requestedOrientation = orientation
