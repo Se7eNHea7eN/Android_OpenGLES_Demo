@@ -65,6 +65,11 @@
                     android:id="@+id/blur"
                     android:icon="@drawable/ic_menu_send"
                     android:title="高斯模糊"/>
+
+                <item
+                    android:id="@+id/test"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="测试"/>
             </menu>
         </item>
 

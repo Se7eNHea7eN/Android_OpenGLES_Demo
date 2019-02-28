@@ -81,14 +81,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             id.mandelbrot -> ShaderToyFragment.newInstance("mandelbrot")
             id.goo -> ShaderToyFragment.newInstance("goo")
             id.cloud -> ShaderToyFragment.newInstance("cloudy")
+
             id.edgeDetect -> CameraFilterFragment.newInstance("edge_detect")
             id.pixelize -> CameraFilterFragment.newInstance("pixelize")
             id.waterColor -> CameraFilterFragment.newInstance("water_color")
             id.aberration -> CameraFilterFragment.newInstance("chromatic_aberration")
             id.relief -> ConvolutionFragment.newInstance(KernalProvider.relief(),3,0.5f)
-            id.blur -> 11.let {
+            id.blur -> 19.let {
                 ConvolutionFragment.newInstance(KernalProvider.gauss(it,9f),it)
             }
+            id.test -> CameraFilterFragment.newInstance("test")
             else -> GLES10Fragment()
         }.apply {
             requestedOrientation = orientation
