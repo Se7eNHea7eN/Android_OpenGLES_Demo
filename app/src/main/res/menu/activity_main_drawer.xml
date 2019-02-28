@@ -118,6 +118,11 @@
                     android:id="@+id/goo"
                     android:icon="@drawable/ic_menu_send"
                     android:title="Goo"/>
+
+                <item
+                    android:id="@+id/shaderToyTest"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="测试"/>
             </menu>
         </item>
     </group>

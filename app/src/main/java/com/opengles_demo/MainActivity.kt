@@ -81,6 +81,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             id.mandelbrot -> ShaderToyFragment.newInstance("mandelbrot")
             id.goo -> ShaderToyFragment.newInstance("goo")
             id.cloud -> ShaderToyFragment.newInstance("cloudy")
+            id.shaderToyTest -> ShaderToyFragment.newInstance("test")
 
             id.edgeDetect -> CameraFilterFragment.newInstance("edge_detect")
             id.pixelize -> CameraFilterFragment.newInstance("pixelize")
