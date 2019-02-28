@@ -10,10 +10,7 @@ import com.google.android.material.navigation.NavigationView
 import com.gyf.barlibrary.BarHide
 import com.gyf.barlibrary.ImmersionBar
 import com.opengles_demo.R.id
-import com.opengles_demo.fragments.CameraFilterFragment
-import com.opengles_demo.fragments.LightingFragment
-import com.opengles_demo.fragments.ShaderToyFragment
-import com.opengles_demo.fragments.TextureMappingFragment
+import com.opengles_demo.fragments.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
@@ -88,8 +85,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             id.pixelize -> CameraFilterFragment.newInstance("pixelize")
             id.waterColor -> CameraFilterFragment.newInstance("water_color")
             id.aberration -> CameraFilterFragment.newInstance("chromatic_aberration")
-            id.relief -> CameraFilterFragment.newInstance("relief")
-            id.blur -> CameraFilterFragment.newInstance("blur")
+            id.relief -> ConvolutionFragment.newInstance(KernalProvider.relief(),3,0.5f)
+            id.blur -> 11.let {
+                ConvolutionFragment.newInstance(KernalProvider.gauss(it,9f),it)
+            }
             else -> GLES10Fragment()
         }.apply {
             requestedOrientation = orientation

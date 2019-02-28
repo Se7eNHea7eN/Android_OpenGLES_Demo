@@ -33,7 +33,7 @@ import javax.microedition.khronos.opengles.GL10
 
 
 
-class CameraFilterFragment : BaseGLFragment() {
+open class CameraFilterFragment : BaseGLFragment() {
     companion object {
         fun newInstance(shaderName: String): CameraFilterFragment {
             return CameraFilterFragment().apply {
@@ -320,7 +320,6 @@ class CameraFilterFragment : BaseGLFragment() {
 
         vertexBuffer.clear()
         vertexBuffer.put(cube).position(0)
-
 
         glGetUniformLocation(shader.program, "iResolution").apply {
             if(this >=0 ){

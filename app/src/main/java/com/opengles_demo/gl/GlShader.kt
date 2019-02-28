@@ -38,7 +38,7 @@ class GlShader {
         GlUtil.checkNoGLES2Error("Creating GlShader")
     }
 
-    constructor(vertexShader:Int,fragmentShader:Int){
+    constructor(vertexShader: Int, fragmentShader: Int) {
         program = glCreateProgram()
         if (program == 0) {
             throw RuntimeException("glCreateProgram() failed. GLES20 error: " + glGetError())
@@ -81,7 +81,29 @@ class GlShader {
         return location
     }
 
-    fun setUniformMatrix3fv(label: String, matrix: FloatArray) : Int{
+    fun setUniformInt(label: String, value: Int): Int {
+        if (program == -1) {
+            throw RuntimeException("The program has been released")
+        }
+
+        val location = getUniformLocation(label)
+        glUniform1i(location, value)
+        GlUtil.checkNoGLES2Error("setUniformInt")
+        return location
+    }
+
+    fun setUniformFloatArray(label: String, floatArray: FloatArray): Int {
+        if (program == -1) {
+            throw RuntimeException("The program has been released")
+        }
+
+        val location = getUniformLocation(label)
+        glUniform1fv(location, floatArray.count(), floatArray, 0)
+        GlUtil.checkNoGLES2Error("setUniformFloatArray")
+        return location
+    }
+
+    fun setUniformMatrix3fv(label: String, matrix: FloatArray): Int {
         if (program == -1) {
             throw RuntimeException("The program has been released")
         }
@@ -92,7 +114,7 @@ class GlShader {
         return location
     }
 
-    fun setUniformMatrix4fv(label: String, matrix: FloatArray) : Int{
+    fun setUniformMatrix4fv(label: String, matrix: FloatArray): Int {
         if (program == -1) {
             throw RuntimeException("The program has been released")
         }
@@ -103,16 +125,17 @@ class GlShader {
         return location
     }
 
-    fun setUniformFloat(label: String,value: Float) : Int{
+    fun setUniformFloat(label: String, value: Float): Int {
         if (program == -1) {
             throw RuntimeException("The program has been released")
         }
 
         val location = getUniformLocation(label)
-        glUniform1f(location,value)
+        glUniform1f(location, value)
         GlUtil.checkNoGLES2Error("glUniformMatrix4fv")
         return location
     }
+
     fun getUniformLocation(label: String): Int {
         if (program == -1) {
             throw RuntimeException("The program has been released")

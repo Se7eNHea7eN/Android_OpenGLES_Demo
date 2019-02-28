@@ -1,15 +1,20 @@
-float max3 (vec3 v) {
-  return max (max (v.x, v.y), v.z);
-}
 
 void mainImage( out vec4 fragColor, in vec2 uv )
 {
-    vec3 color = texture2D(iChannel0,uv).xyz;
-    vec3 offsetColor = texture2D(iChannel0,uv + 1./iResolution.xy).xyz;
-    vec3 diffs = offsetColor - color;
+    vec4 color = vec4(0.0);
+    float kernel[9];
+    kernel[6] = -1.; kernel[7] = -1.; kernel[8] = 0.;
+    kernel[3] = -1.; kernel[4] = 0.; kernel[5] = 1.;
+    kernel[0] = 0.; kernel[1] = 1.; kernel[2] = 1.;
+    int index = 0;
+    for(int y=-1;y<=1;y++)
+    {
+        for(int x = -1;x<=1;x++)
+        {
+          color += texture2D(iChannel0,uv + vec2(x,y)/iResolution.xy)*kernel[index];
+          index++;
+        }
+    }
+    fragColor = vec4(color.xyz +vec3(.5),1.0);
 
-    float maxV = max3(diffs);
-
-    float gray = clamp(maxV + 0.3,0.,1.);
-    fragColor = vec4(gray,gray,gray,1.0);
 }
