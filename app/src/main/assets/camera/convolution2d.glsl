@@ -1,4 +1,4 @@
-uniform float kernel[361];
+uniform float kernel[900];
 uniform float offset;
 uniform int kernelSize;
 

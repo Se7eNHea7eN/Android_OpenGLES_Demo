@@ -54,7 +54,7 @@
                 <item
                     android:id="@+id/aberration"
                     android:icon="@drawable/ic_menu_send"
-                    android:title="幻影"/>
+                    android:title="色差分离"/>
 
                 <item
                     android:id="@+id/relief"
