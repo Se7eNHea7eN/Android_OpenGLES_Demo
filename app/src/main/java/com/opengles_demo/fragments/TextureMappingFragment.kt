@@ -38,7 +38,6 @@ class TextureMappingFragment : MVPFragment() {
 
     override fun onDrawFrame() {
         shader.useProgram()
-        shader.setUniformMatrix4fv("uMVPMatrix", mvpMatrix)
         shader.setVertexAttribArray("aPosition", 3, vertexBuffer)
         shader.setVertexAttribArray("aTextureCoordinate", 2, textureMappingBuffer)
 

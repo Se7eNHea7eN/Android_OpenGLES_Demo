@@ -17,11 +17,6 @@ abstract class MVPFragment: BaseGLFragment() {
     //视矩阵
     protected val viewMatrix = FloatArray(16)
 
-    protected val mvMatrix = FloatArray(16)
-
-    //透视矩阵与视图矩阵变换后的总矩阵
-    protected val mvpMatrix = FloatArray(16)
-
     protected lateinit var shader: GlShader
     private var lastDrawTime: Long = 0
     protected var deltaTime = 0L
@@ -44,8 +39,11 @@ abstract class MVPFragment: BaseGLFragment() {
         deltaTime = time - lastDrawTime
         lastDrawTime = time
         onEarlyDrawFrame()
-        Matrix.multiplyMM(mvMatrix, 0, viewMatrix, 0, modelMatrix, 0)
-        Matrix.multiplyMM(mvpMatrix, 0, projectionMatrix, 0, mvMatrix, 0)
+        shader.useProgram()
+        shader.setUniformMatrix4fv("projectionMatrix",projectionMatrix)
+        shader.setUniformMatrix4fv("modelMatrix",modelMatrix)
+        shader.setUniformMatrix4fv("viewMatrix",viewMatrix)
+
         glClearColor(0f, 0f, 0f, 0f)
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
         onDrawFrame()

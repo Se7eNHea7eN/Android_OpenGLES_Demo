@@ -11,7 +11,7 @@ import com.opengles_demo.obj.ObjUtils
 import java.io.InputStreamReader
 import javax.microedition.khronos.opengles.GL10
 
-class ShadowFragment : MVPFragment() {
+class PhongFragment : MVPFragment() {
     private lateinit var teapot: Obj
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +22,7 @@ class ShadowFragment : MVPFragment() {
 
     override fun onSurfaceChanged(gl: GL10, width: Int, height: Int) {
         super.onSurfaceChanged(gl, width, height)
-        Matrix.translateM(viewMatrix,0,0f,-1.5f,3f)
+        Matrix.translateM(viewMatrix, 0, 0f, -1.5f, 3f)
     }
 
     override fun onEarlyDrawFrame() {
@@ -30,15 +30,18 @@ class ShadowFragment : MVPFragment() {
     }
 
     override fun onDrawFrame() {
-        shader.setUniformMatrix4fv("uMVPMatrix", mvpMatrix)
         val vertices = ObjData.getVertices(teapot)
         shader.setVertexAttribArray("aPosition", 3, vertices)
         val normals = ObjData.getNormals(teapot)
         shader.setVertexAttribArray("aNormal", 3, normals)
+        shader.setUniform3fv("objColor", floatArrayOf(1f, 1f, 1f))
+        shader.setUniform3fv("lightColor", floatArrayOf(1f, 0f, 0f))
+        shader.setUniformFloat("ambientStrength", 0.1f)
+        shader.setUniform3fv("lightPos", floatArrayOf(3f, 3f, 3f))
         val indices = ObjData.getFaceVertexIndices(teapot)
-        glDrawElements(GL_TRIANGLES,indices.capacity(),GL_UNSIGNED_INT,indices )
+        glDrawElements(GL_TRIANGLES, indices.capacity(), GL_UNSIGNED_INT, indices)
     }
 
-    override fun vertexShader() = getAssetAsString(resources, "shadow/vertex_shader.glsl")!!
-    override fun fragmentShader() = getAssetAsString(resources, "shadow/fragment_shader.glsl")!!
+    override fun vertexShader() = getAssetAsString(resources, "phong/vertex_shader.glsl")!!
+    override fun fragmentShader() = getAssetAsString(resources, "phong/fragment_shader.glsl")!!
 }

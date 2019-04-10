@@ -3,10 +3,11 @@
     <string name="title_gles10">GLES1.0</string>
     <string name="title_customizeshader">着色器</string>
     <string name="title_texture">纹理</string>
-    <string name="title_3d">3d绘制</string>
+    <string name="title_3d">Cube</string>
     <string name="texture_mapping">纹理映射</string>
     <string name="point_lighting">点光源</string>
     <string name="shadow">阴影</string>
+    <string name="phong">冯氏光照模型</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

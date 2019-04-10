@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import asiainnovations.com.opengles_demo.fragments.*
+import asiainnovations.com.opengles_demo.fragments.BaseGLFragment
+import asiainnovations.com.opengles_demo.fragments.CubeFragment
+import asiainnovations.com.opengles_demo.fragments.GLES10Fragment
 import com.google.android.material.navigation.NavigationView
 import com.gyf.barlibrary.BarHide
 import com.gyf.barlibrary.ImmersionBar
@@ -67,12 +69,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         replaceFragment(when (item.itemId) {
             id.navigation_gles10 -> GLES10Fragment()
-            id.navigation_customizeshader -> ShaderFragment()
-            id.navigation_texture -> TextureFragment()
+//            id.navigation_customizeshader -> ShaderFragment()
+//            id.navigation_texture -> TextureFragment()
             id.navigation_3d -> CubeFragment()
             id.navigation_texture_mapping -> TextureMappingFragment()
             id.navigation_pointlighting -> LightingFragment()
-            id.navigation_shadow -> ShadowFragment()
+            id.navigation_phong -> PhongFragment()
             id.gradient -> ShaderToyFragment.newInstance("gradient")
             id.gradient2 -> ShaderToyFragment.newInstance("gradient2")
             id.seascape -> ShaderToyFragment.newInstance("seascape")

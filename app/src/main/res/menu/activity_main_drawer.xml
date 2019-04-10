@@ -8,15 +8,11 @@
             android:id="@+id/navigation_gles10"
             android:icon="@drawable/ic_menu_send"
             android:title="@string/title_gles10" />
-        <item
-            android:id="@+id/navigation_customizeshader"
-            android:icon="@drawable/ic_menu_send"
-            android:title="@string/title_customizeshader" />
 
-        <item
-            android:id="@+id/navigation_texture"
-            android:icon="@drawable/ic_menu_send"
-            android:title="@string/title_texture" />
+        <!--<item-->
+            <!--android:id="@+id/navigation_texture"-->
+            <!--android:icon="@drawable/ic_menu_send"-->
+            <!--android:title="@string/title_texture" />-->
 
         <item
             android:id="@+id/navigation_3d"
@@ -34,9 +30,9 @@
             android:title="@string/point_lighting" />
 
         <item
-            android:id="@+id/navigation_shadow"
+            android:id="@+id/navigation_phong"
             android:icon="@drawable/ic_menu_send"
-            android:title="@string/shadow" />
+            android:title="@string/phong" />
 
         <item
             android:title="@string/filter" >

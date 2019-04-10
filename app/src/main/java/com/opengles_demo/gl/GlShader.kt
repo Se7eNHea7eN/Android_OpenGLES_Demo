@@ -103,6 +103,18 @@ class GlShader {
         return location
     }
 
+    fun setUniform3fv(label: String, value: FloatArray): Int {
+        if (program == -1) {
+            throw RuntimeException("The program has been released")
+        }
+
+        val location = getUniformLocation(label)
+        glUniform3fv(location, 1, value, 0)
+        GlUtil.checkNoGLES2Error("setUniform3fv")
+        return location
+    }
+
+
     fun setUniformMatrix3fv(label: String, matrix: FloatArray): Int {
         if (program == -1) {
             throw RuntimeException("The program has been released")

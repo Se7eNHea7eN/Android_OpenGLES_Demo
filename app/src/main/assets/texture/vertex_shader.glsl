@@ -1,4 +1,6 @@
-uniform mat4 uMVPMatrix;
+uniform mat4 projectionMatrix;
+uniform mat4 modelMatrix;
+uniform mat4 viewMatrix;
 attribute vec4 aPosition;
 attribute vec4 aTextureCoordinate;
 
@@ -9,5 +11,5 @@ main()
 {
     vTextureCoordinate = aTextureCoordinate.xy;
 
-    gl_Position = uMVPMatrix * aPosition;
+    gl_Position = projectionMatrix * viewMatrix * modelMatrix * aPosition;
 }

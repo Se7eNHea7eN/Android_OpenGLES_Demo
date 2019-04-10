@@ -14,7 +14,6 @@ class CubeFragment : MVPFragment() {
     }
 
     override fun onDrawFrame() {
-        shader.setUniformMatrix4fv("uMVPMatrix", mvpMatrix)
 
         shader.setVertexAttribArray("aPosition", 3, ByteBuffer.allocateDirect(Cube.vertices.size * 4)
                 .order(ByteOrder.nativeOrder()).asFloatBuffer().apply {

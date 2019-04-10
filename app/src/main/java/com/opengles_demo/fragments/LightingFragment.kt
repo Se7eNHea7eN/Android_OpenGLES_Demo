@@ -29,6 +29,7 @@ class LightingFragment : MVPFragment() {
         var angleInDegrees = 0f
 
         protected val lightModelMatrix = FloatArray(16)
+
         init {
             Matrix.setIdentityM(lightModelMatrix, 0)
             lightShader = GlShader(getAssetAsString(resources, "point/vertex_shader.glsl")!!,
@@ -105,8 +106,6 @@ class LightingFragment : MVPFragment() {
 
     override fun onDrawFrame() {
         shader.useProgram()
-        shader.setUniformMatrix4fv("uMVPMatrix", mvpMatrix)
-        shader.setUniformMatrix4fv("uMVMatrix", mvMatrix)
         shader.setVertexAttribArray("aPosition", 3, vertexBuffer)
         shader.setVertexAttribArray("aNormal", 3, normalBuffer)
         shader.setVertexAttribArray("aTextureCoordinate", 2, textureMappingBuffer)
