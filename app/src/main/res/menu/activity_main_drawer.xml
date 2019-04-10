@@ -29,9 +29,14 @@
             android:title="@string/texture_mapping" />
 
         <item
-            android:id="@+id/navigation_lighting"
+            android:id="@+id/navigation_pointlighting"
             android:icon="@drawable/ic_menu_send"
-            android:title="@string/lighting" />
+            android:title="@string/point_lighting" />
+
+        <item
+            android:id="@+id/navigation_shadow"
+            android:icon="@drawable/ic_menu_send"
+            android:title="@string/shadow" />
 
         <item
             android:title="@string/filter" >
