@@ -122,7 +122,7 @@ class LightingFragment : MVPFragment() {
     }
 
     override fun onSurfaceChanged(gl: GL10, width: Int, height: Int) {
-        eyeZ = -8f
+        eye.z = -8f
         super.onSurfaceChanged(gl, width, height)
     }
 

@@ -4,6 +4,7 @@ import android.opengl.GLES20.*
 import android.opengl.Matrix
 import android.os.Bundle
 import asiainnovations.com.opengles_demo.getAssetAsString
+import com.opengles_demo.math.Vector3
 import com.opengles_demo.obj.Obj
 import com.opengles_demo.obj.ObjData
 import com.opengles_demo.obj.ObjReader
@@ -13,7 +14,6 @@ import javax.microedition.khronos.opengles.GL10
 
 class PhongFragment : MVPFragment() {
     private lateinit var teapot: Obj
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val inputStream = InputStreamReader(context!!.assets.open("models/teapot.obj"))
@@ -21,8 +21,10 @@ class PhongFragment : MVPFragment() {
     }
 
     override fun onSurfaceChanged(gl: GL10, width: Int, height: Int) {
+        eye.y = 6f
+        eye.z = -8f
+        look = look.rotate(Vector3(1f, 0f, 0f), -30f * Math.PI.toFloat() / 2f)
         super.onSurfaceChanged(gl, width, height)
-        Matrix.translateM(viewMatrix, 0, 0f, -1.5f, 3f)
     }
 
     override fun onEarlyDrawFrame() {
