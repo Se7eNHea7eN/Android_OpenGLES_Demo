@@ -47,7 +47,7 @@ class TextureFragment : MVPFragment() {
     override fun onDrawFrame() {
         shader.setVertexAttribArray("position", 2, vertexBuffer)
         shader.setVertexAttribArray("inputTextureCoordinate", 2, textureMappingBuffer)
-        shader.setUniformFloat("saturation",saturation/100F)
+        shader.setUniform1fv("saturation",saturation/100F)
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4)
     }
 

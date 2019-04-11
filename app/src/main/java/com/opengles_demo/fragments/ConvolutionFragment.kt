@@ -29,7 +29,7 @@ class ConvolutionFragment : CameraFilterFragment() {
     override fun onDrawFrame(gl: GL10?) {
         shader.setUniformFloatArray("kernel",kernel)
         shader.setUniformInt("kernelSize",kernelSize)
-        shader.setUniformFloat("offset",offset)
+        shader.setUniform1fv("offset",offset)
         super.onDrawFrame(gl)
     }
 }

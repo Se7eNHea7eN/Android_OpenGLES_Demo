@@ -59,10 +59,6 @@ abstract class MVPFragment : BaseGLFragment() {
 
         Matrix.setIdentityM(modelMatrix, 0)
 
-
-        // Set the view matrix. This matrix can be said to represent the camera position.
-        // NOTE: In OpenGL 1, a ModelView matrix is used, which is a combination of a model and
-        // view matrix. In OpenGL 2, we can keep track of these matrices separately if we choose.
         Matrix.setLookAtM(viewMatrix, 0, eye.x, eye.y, eye.z, look.x, look.y, look.z, up.x, up.y, up.z)
     }
 

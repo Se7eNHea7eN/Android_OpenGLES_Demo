@@ -10,8 +10,8 @@ varying vec3 vNormal;
 
 void main()
 {
-	vPosition = vec3(viewMatrix * modelMatrix  * aPosition);
-    vNormal = vec3(viewMatrix * modelMatrix  * vec4(aNormal, 0.0));
+	vPosition = vec3(modelMatrix  * aPosition);
+    vNormal = vec3(modelMatrix  * vec4(aNormal, 0.0));
 
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * aPosition;
 }

@@ -137,7 +137,7 @@ class GlShader {
         return location
     }
 
-    fun setUniformFloat(label: String, value: Float): Int {
+    fun setUniform1fv(label: String, value: Float): Int {
         if (program == -1) {
             throw RuntimeException("The program has been released")
         }
