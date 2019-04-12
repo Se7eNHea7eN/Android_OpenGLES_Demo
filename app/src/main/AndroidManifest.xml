@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:resizeableActivity="true"
         android:maxAspectRatio="2.4"
+        android:name=".GlApplication"
         >
         <meta-data
             android:name="android.max_aspect"

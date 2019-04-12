@@ -24,9 +24,9 @@ abstract class MVPFragment : BaseGLFragment() {
 
     protected var eye = Vector3(0f, 0f, -5f)
 
-    protected var look = Vector3.Forward
+    protected var look = Vector3.Forward()
 
-    protected var up = Vector3.Up
+    protected var up = Vector3.Up()
 
     final override fun onDrawFrame(gl: GL10) {
         val time = System.currentTimeMillis()
